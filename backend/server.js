@@ -1,6 +1,8 @@
 require('dotenv').config();
 const expres = require('express');
 const workoutRoutes = require('./routes/workouts');
+const connectDb = require('./db');
+connectDb()
 
 const app = expres();
 
@@ -9,6 +11,9 @@ app.use((req, res, next)=>{
     console.log(`${req.path}, ${req.method}`);
     next();
 });
+
+// middleware 2
+app.use(expres.json());
 
 app.use('/api/workouts', workoutRoutes);
 
