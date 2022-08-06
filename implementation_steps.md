@@ -122,7 +122,7 @@ app.use((req, res, next)=>{
 
 ![](./images/image3.png)
 
-create new folder called routes in backend and create workouts.js file in it.
+1. create new folder called routes in backend and create workouts.js file in it.
 
 **workouts.js** file
 
@@ -140,7 +140,7 @@ workouts.get('/', (req, res) => {
 module.exports = workouts;
 ```
 
-import this router in server.js file. set path to /api/workouts.
+2. import this router in server.js file. set path to /api/workouts.
 
 **server.js**
 
@@ -150,7 +150,7 @@ const workoutRoutes = require('./routes/workouts');
 app.use('/api/workouts', workoutRoutes);
 ```
 
-<b>Creating different routes<b>
+3. Creating different routes for different endpoints.
 
 **routes/workouts.js**
 
@@ -196,7 +196,7 @@ router.delete('/:id', (req, res) => {
 module.exports = router;
 ```
 
-<b>Add a middleware<b>
+4. Add a middleware
 
 when we deal with patch or post request where we sent data to backend, we can access the data in req.body. But we can only access that if we use a middleware.
 
@@ -214,17 +214,17 @@ app.use(express.json())
 
 ## 5. MongoDB Atlas & Mongoose
 
-- create a cluster in mongoDB Atlas.
-- click connect to cluster.
-- choose connect your application.
+1. create a cluster in mongoDB Atlas.
+2. click connect to cluster.
+3. choose connect your application.
 
 ![](./images/image5.png)
 
-- copy the connection string.
+4. copy the connection string.
 
 ![](./images/image6.png)
 
-- Go to .env file and paste the connection string. change username and password.
+5. Go to .env file and paste the connection string. change username and password.
 
 **.env**
 
@@ -232,7 +232,7 @@ app.use(express.json())
 MONGO_URI = mongodb+srv://jissmon:jissmon123@cluster0.hkuhz.mongodb.net/blogs?retryWrites=true&w=majority
 ```
 
-- Create a db.js file in backend folder.
+6. Create a db.js file in backend folder.
 
 **db.js**
 
@@ -253,7 +253,7 @@ const connectDb = async() => {
 module.exports = connectDb;
 ```
 
-- Import the db.js file in server.js file.
+7. Import the db.js file in server.js file.
 
 **server.js**
 
@@ -262,7 +262,7 @@ const connectDb = require('./db');
 connectDb()
 ```
 
-- Finaly run the server. You will see this message
+8. Finaly run the server. You will see this message
 
 Server is running on port 4000
 
