@@ -7,7 +7,7 @@ Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVw
 - On front end we use React.js and on back end we use Node.js and Express.js.
 - We use MongoDB as a database.
 
-## Workflow:
+## 1. Workflow:
 
 When we want to show data on our website, we sent a request to our backend. Backend is an express app running on Node.js environment. express is a framework for Node.js to create APIs.
 Node and express handles the request on our backend and interact with database to get the data.
@@ -17,7 +17,7 @@ backend also handles authentication and authorization for the user. also protect
 
 If we do that we are putting sensitive user data in our front end. instead we put them in backend. thus hiding it from front end.
 
-## Express App Set Up
+## 2. Express App Set Up
 
 1. create backend folder and create server.js file in it.
 
@@ -63,7 +63,7 @@ run the localhost in browser.
 http://localhost:4000/
 
 
-### create environment variables<
+### create environment variables
 
 - environment variables are remain hidden when we push the code to github.
 
@@ -118,7 +118,7 @@ app.use((req, res, next)=>{
 })
 ```
 
-## Express Routes & API Routes
+## 3. Express Routes & API Routes
 
 ![](./images/image3.png)
 
@@ -212,7 +212,7 @@ app.use(express.json())
 
 ![](./images/image4.png)
 
-## MongoDB Atlas & Mongoose
+## 5. MongoDB Atlas & Mongoose
 
 - create a cluster in mongoDB Atlas.
 - click connect to cluster.
@@ -270,7 +270,7 @@ MongoDB Connected: cluster0-shard-00-02.hkuhz.mongodb.net
 
 
 
-## Models & Schemas
+## 6. Models & Schemas
 
 ### Create Schema and model
 
@@ -342,7 +342,7 @@ router.post('/', async (req, res) => {
 ![](./images/image7.png)
 
 
-## 6. Controllers PART 1
+## 7. Controllers PART 1
 
 https://www.youtube.com/watch?v=oEHHjs1UVXQ&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=6
 
