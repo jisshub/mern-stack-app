@@ -19,31 +19,30 @@ If we do that we are putting sensitive user data in our front end. instead we pu
 
 ## Express App Set Up
 
-create backend folder and create server.js file in it.
+1. create backend folder and create server.js file in it.
 
-move to backend folder and 
+2. move to backend folder and 
 
 ```bash
 npm init
 ```
 
-create express app.
+3. create express app.
 
-install express package.
+4. install express package.
 
 ```sh
 npm i express
 ```
 
-install nodemon package.
-
+5. install nodemon package.
 
 ```sh
 
 npm i nodemon
 ```
 
-create a dev script in package.json file.
+6. create a dev script in package.json file.
 
 ```json
   "scripts": {
@@ -53,7 +52,7 @@ create a dev script in package.json file.
   }
 ```
 
-run the node server.
+7. run the node server.
 
 ```sh
 npm run dev
@@ -64,11 +63,11 @@ run the localhost in browser.
 http://localhost:4000/
 
 
-<b>create environment variables<b>
+### create environment variables<
 
-environment variables are remain hidden when we push the code to github.
+- environment variables are remain hidden when we push the code to github.
 
-install dotenv package.
+1. install dotenv package.
 
 dotenv package loads the environment variables from .env file into process.env object.
 
@@ -76,7 +75,7 @@ dotenv package loads the environment variables from .env file into process.env o
 npm i dotenv
 ```
 
-create environment variables in .env file.
+2. create environment variables in .env file.
 
 ```env
 PORT=4000
@@ -101,14 +100,14 @@ app.listen(process.env.PORT, () => {
 })
 ```
 
-<b>open postman<b>
+### open postman
 
 set up first get request.
 
 ![](./images/image2.png)
 
 
-<b>Set up the middleware<b>
+### Set up the middleware
 
 **app.js**
 
@@ -273,7 +272,7 @@ MongoDB Connected: cluster0-shard-00-02.hkuhz.mongodb.net
 
 ## Models & Schemas
 
-<b>Create Schema and model<b>
+### Create Schema and model
 
 1. create a *models* folder in backend folder.
 2. create a *Workouts.js* file in models folder.
@@ -281,8 +280,71 @@ MongoDB Connected: cluster0-shard-00-02.hkuhz.mongodb.net
 **Workouts.js**
 
 ```js
+const mongoose = require('mongoose');
 
+const workoutSchema = new mongoose.Schema({
+    title: {  
+        type: String,
+        required: true,
+    },
+    reps: {
+        type: Number,
+        required: true,
+    },
+    load: {
+        type: Number,
+        required: true,
+    }
+}, {
+    timestamps: true,
+});
+
+module.exports = mongoose.model('Workout', workoutSchema);
 ```
+
+* Here, *timestamps* is a plugin that automatically adds *createdAt* and *updatedAt* fields to the schema.
+
+* Schema is a structure of the document we want to store in the collection.
+
+* We use this model to interact with collection called *workouts*.
+
+* *Workout* collection is created in our database.
+
+### Create a new workout document
+
+* Import this model in routes/workouts.js file.
+
+**routes/workouts.js**
+
+
+```js
+// @route POST /api/workouts
+router.post('/', async (req, res) => { 
+    try {
+        // destructure the body of the request
+        const {title, load, reps}  = req.body;
+        // create a new workout document with the body of the request
+        const workout = await Workout.create({title, reps, load})   
+        // send the response
+        res.status(201).json({
+            "message": "workout created",
+            "workout": workout
+        });
+    } catch (error) {
+        // send the error response
+        res.status(400).json({error: error.message});
+    }
+});
+```
+
+### Send POST request in postman
+
+![](./images/image7.png)
+
+
+## 6. Controllers PART 1
+
+https://www.youtube.com/watch?v=oEHHjs1UVXQ&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=6
 
 
 
