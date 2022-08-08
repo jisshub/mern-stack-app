@@ -1,6 +1,6 @@
 # mern-stack-app
 
-[1.Workflow](#1.-Workflow)
+[1.Workflow](#1-workflow)
 
 [2.Implementation](#2.-implementation)
 
