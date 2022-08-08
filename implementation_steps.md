@@ -1,5 +1,10 @@
 # mern-stack-app
 
+[1.Workflow](#1.-workflow)
+[2.Implementation](#2.-implementation)
+[3.Deployment](#3.-deployment)
+[4.Conclusion](#4.-conclusion)
+
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
 ![](./images/image1.png)
@@ -7,7 +12,7 @@ Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVw
 - On front end we use React.js and on back end we use Node.js and Express.js.
 - We use MongoDB as a database.
 
-## 1. Workflow:
+# 1. Workflow:
 
 When we want to show data on our website, we sent a request to our backend. Backend is an express app running on Node.js environment. express is a framework for Node.js to create APIs.
 Node and express handles the request on our backend and interact with database to get the data.
@@ -17,7 +22,7 @@ backend also handles authentication and authorization for the user. also protect
 
 If we do that we are putting sensitive user data in our front end. instead we put them in backend. thus hiding it from front end.
 
-## 2. Express App Set Up
+# 2. Express App Set Up
 
 1. create backend folder and create server.js file in it.
 
@@ -63,7 +68,7 @@ run the localhost in browser.
 http://localhost:4000/
 
 
-### create environment variables
+## create environment variables
 
 - environment variables are remain hidden when we push the code to github.
 
@@ -100,14 +105,14 @@ app.listen(process.env.PORT, () => {
 })
 ```
 
-### open postman
+## open postman
 
 set up first get request.
 
 ![](./images/image2.png)
 
 
-### Set up the middleware
+## Set up the middleware
 
 **app.js**
 
@@ -118,7 +123,7 @@ app.use((req, res, next)=>{
 })
 ```
 
-## 3. Express Routes & API Routes
+# 3. Express Routes & API Routes
 
 ![](./images/image3.png)
 
@@ -212,7 +217,7 @@ app.use(express.json())
 
 ![](./images/image4.png)
 
-## 5. MongoDB Atlas & Mongoose
+# 5. MongoDB Atlas & Mongoose
 
 1. create a cluster in mongoDB Atlas.
 2. click connect to cluster.
@@ -270,9 +275,9 @@ MongoDB Connected: cluster0-shard-00-02.hkuhz.mongodb.net
 
 
 
-## 6. Models & Schemas
+# 6. Models & Schemas
 
-### Create Schema and model
+## Create Schema and model
 
 1. create a *models* folder in backend folder.
 2. create a *Workouts.js* file in models folder.
@@ -310,7 +315,7 @@ module.exports = mongoose.model('Workout', workoutSchema);
 
 * *Workout* collection is created in our database.
 
-### Create a new workout document
+## Create a new workout document
 
 * Import this model in routes/workouts.js file.
 
@@ -337,14 +342,167 @@ router.post('/', async (req, res) => {
 });
 ```
 
-### Send POST request in postman
+## Send POST request in postman
 
 ![](./images/image7.png)
 
 
-## 7. Controllers PART 1
+# 7. Controllers PART 1 & PART 2
 
-https://www.youtube.com/watch?v=oEHHjs1UVXQ&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=6
+* Create a *controllers* folder in backend folder. create a *WorkoutController.js* file in controllers folder.
+
+**WorkoutController.js**
+
+```js
+const Workout = require('../models/Workout');
+const mongoose = require('mongoose');
+
+// GET /api/workouts
+// Get all workouts
+const getAllWorkouts = async (req, res) => {
+    try {
+        const workouts = await Workout.find({}).sort({createdAt: -1});
+        res.status(200).json({
+            "message": "workouts found",
+            workouts});
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
+
+// GET /api/workouts/:Id
+// Get a single workout
+const getAWorkout = async (req, res) => {
+    const {id} = req.params;
+    try {
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({error: "Invalid ID. Check given id is a valid mongoose Object Id"});
+        }
+        const workout = await Workout.findById(id);
+        if (!workout) {
+            res.status(404).json({error: "workout not found"});
+        } else {
+        res.status(200).json({
+            "message": "workout found",
+            workout});
+        }
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+
+}
+
+// POST /api/workouts
+// Create a new workout
+const createWorkout = async (req, res) => {
+    const {title, load, reps} = req.body;
+    try {
+        const newWorkout = await Workout.create({title, load, reps});
+        res.status(201).json({
+            "message": "workout created",
+            newWorkout});
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
+
+// update a workout
+// PATCH /api/workouts/:id
+const updateWorkout = async (req, res) => {
+    const {id} = req.params;
+    const {title, load, reps} = req.body;
+    try {
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({error: "Invalid ID. Check given id is a valid mongoose Object Id"});
+        }
+        const workout = await Workout.findByIdAndUpdate(id, {title, load, reps}, {new: true});
+        res.status(200).json({
+            "message": "workout updated",
+            workout});
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
+
+// delete a workout
+// DELETE /api/workouts/:id
+const deleteWorkout = async (req, res) => {
+    const {id} = req.params;
+    try {
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({error: "Invalid ID. Check given id is a valid mongoose Object Id"});
+        }
+        const workout = await Workout.findByIdAndDelete(id);
+        if (!workout) {
+            res.status(404).json({error: "workout not found"});
+        }            
+        res.status(200).json({
+            "message": "workout deleted"
+        });
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
+
+module.exports = {getAllWorkouts, getAWorkout, createWorkout, updateWorkout, deleteWorkout};
+```
+
+
+### Error:
+
+```json
+{
+    "error": "Cast to ObjectId failed for value \"777\" (type string) at path \"_id\" for model \"Workout\""
+}
+```
+
+This error is because we are trying to find a workout with an id that is not the kind of mongoose object id.
+
+**Solution:**
+
+```js
+if(!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({error: "Invalid ID. Check given id is a valid mongoose object id"});
+}
+```
+
+It means that the id is not a valid mongoose object id. If yes, then we return an error. If not, we continue to the next step.
+
+![](./images/image8.png)
+
+
+### Update routes/workouts.js file
+
+**routes/workouts.js**
+
+```js
+const express = require('express');
+const Workout = require('../models/Workout');
+
+const {createWorkout, getAllWorkouts, getAWorkout, updateWorkout, deleteWorkout} 
+= require('../controllers/WorkoutsController');
+// create routes instance
+const router = express.Router();
+
+// get all workouts
+router.get('/', getAllWorkouts);
+
+// get a single workout
+router.get('/:id', getAWorkout);
+
+// post a new workout
+router.post('/', createWorkout);
+
+// update a workout
+router.patch('/:id', updateWorkout);
+
+// delete a workout
+router.delete('/:id', deleteWorkout);
+
+module.exports = router;
+```
+
+
 
 
 
