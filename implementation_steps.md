@@ -1,6 +1,6 @@
 # mern-stack-app
 
-[1.Workflow](#workflow)
+[1. Workflow](#1-workflow)
 
 [2.Implementation](#2.-implementation)
 
@@ -15,7 +15,7 @@ Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVw
 - On front end we use React.js and on back end we use Node.js and Express.js.
 - We use MongoDB as a database.
 
-# Workflow
+# 1. Workflow
 
 When we want to show data on our website, we sent a request to our backend. Backend is an express app running on Node.js environment. express is a framework for Node.js to create APIs.
 Node and express handles the request on our backend and interact with database to get the data.
