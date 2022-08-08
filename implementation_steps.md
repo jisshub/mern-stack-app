@@ -2,11 +2,17 @@
 
 [1. Workflow](#1-workflow)
 
-[2.Implementation](#2.-implementation)
+[2. Express App Set Up](#2-Express-App-Set-Up)
 
-[3.Deployment](#3.-deployment)
+[3. Express Routes & API Routes](#3-Express-Routes-&-API-Routes)
 
-[4.Conclusion](#4.-conclusion)
+[4. MongoDB Atlas & Mongoose](#4-MongoDB-Atlas-&-Mongoose)
+
+[5. Models & Schemas](#5-Models-&-Schemas)
+
+[6. Controllers PART 1 & PART 2](#6-Controllers-PART-1-&-PART-2)
+
+[7. Making a React App](#7-making-a-react-app)
 
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
@@ -220,7 +226,7 @@ app.use(express.json())
 
 ![](./images/image4.png)
 
-# 5. MongoDB Atlas & Mongoose
+# 4. MongoDB Atlas & Mongoose
 
 1. create a cluster in mongoDB Atlas.
 2. click connect to cluster.
@@ -277,8 +283,7 @@ Server is running on port 4000
 MongoDB Connected: cluster0-shard-00-02.hkuhz.mongodb.net
 
 
-
-# 6. Models & Schemas
+# 5. Models & Schemas
 
 ## Create Schema and model
 
@@ -350,7 +355,7 @@ router.post('/', async (req, res) => {
 ![](./images/image7.png)
 
 
-# 7. Controllers PART 1 & PART 2
+# 6. Controllers PART 1 & PART 2
 
 * Create a *controllers* folder in backend folder. create a *WorkoutController.js* file in controllers folder.
 
@@ -505,7 +510,7 @@ router.delete('/:id', deleteWorkout);
 module.exports = router;
 ```
 
-# 8. Making a React App
+# 7. Making a React App
 
 https://www.youtube.com/watch?v=bx4nk7kBS10&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=8
 
