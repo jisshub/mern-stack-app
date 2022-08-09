@@ -14,6 +14,12 @@
 
 [7. Making a React App](#7-making-a-react-app)
 
+[8. Fetching Data](#8-fetching-data)
+
+[9. Create Workout Form](#9-create-workout-form)
+
+[10. Adding React Context](#10-adding-react-context)
+
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
 ![](./images/image1.png)
@@ -514,7 +520,261 @@ module.exports = router;
 
 https://www.youtube.com/watch?v=bx4nk7kBS10&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=8
 
+### Create a React Application.
+
+```bash
+npx create-react-app frontend
+cd frontend
+npm run start
+```
+
+- Delete *src/App.css* file.
+- Delete *src/App.test.js* file.
+- Delete *src/logo.svg* file.
+- Delete *src/reportWebvitals.js* file.
+- Delete *src/setupTests.js* file.
+
+Clear the most part of code from App.js file.
+
+**App.js**
+
+```js
+function App() {
+  return (
+    <div className="App">
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Adding react routers
+
+<b>Install React Router<b>
+
+```bash
+npm install react-router-dom@5.1
+```
+
+**App.js**
+
+```js
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+          <Route path="/">
+            <Home />
+          </Route>
+      </BrowserRouter>
+    </div>
+  );
+}
+```
+
+**Home.js**
+
+```js
+const Home = () => {
+    return (
+        <div className='home'>
+            <h1>Home</h1>
+        </div>
+     );
+}
+ 
+export default Home;
+```
+
+## Create components
+
+### 1. Navbar Component
 
 
+**Navbar.js**
 
+```js
+import {Link} from 'react-router-dom';
+
+const Navbar = () => {
+    return ( 
+        <div className='container'>
+            <Link to='/'>
+                <h1>Workout Buddy</h1>
+            </Link>
+        </div>
+     );
+}
+ 
+export default Navbar;
+```
+
+- Import the component in the App.js file.
+
+**App.js**
+
+```js
+<div className="App">
+    <BrowserRouter>
+    <Navbar />
+    <div className='pages'>
+        <Route path="/">
+        <Home />
+        </Route>
+    </div>
+    </BrowserRouter>
+</div>
+```
+
+# 8. Fetching Data
+
+**Home.js**
+
+```js
+const Home = () => {
+    const [workouts, setWorkouts] = useState(null);
+    useEffect(() => {
+        const fetchWorkout = async () => {
+        // get response
+        const response = await fetch('/api/workouts');
+        // pass json
+        const finalData = json.workouts;
+        if (response.ok) {
+            // set the state
+            setWorkouts(finalData);
+        }
+      }
+        fetchWorkout();
+    }, [])
+    
+    return (
+        <div className='home'>
+            <div className='workouts'>
+                 {workouts && workouts.map(workout => (
+                    // pass workout to WorkoutDetail component as a prop
+                    <WorkoutDetails workout={workout} key={workout._id} />
+                ))}
+            </div>
+        </div>
+     );
+}
+```
+
+## Create WorkoutDetails Component
+
+**WorkoutDetails.js**
+
+- Set workout as a prop.
+
+```js
+const WorkoutDetails = ({ workout }) => {
+    return (  
+        <div className='workouts-details'>
+            <h4>{workout.title}</h4>
+            <p><strong>Load (kg): </strong>{workout.load}</p>
+            <p><strong>Number of reps: </strong>{workout.reps}</p>
+            <p>{workout.createdAt}</p>
+        </div>
+    );
+}
+ 
+export default WorkoutDetails;
+```
+
+### Update package.json file with proxy property
+
+- Add proxy property at begining of the package.json file.
+
+**package.json**
+
+```json
+{
+  "proxy": "http://localhost:4000"
+  "name": "frontend",
+  "version": "0.1.0",
+  ---
+  ---
+  --
+}
+```
+
+# 9. Create Workout Form
+
+
+**components/WorkoutForm.js**
+
+```js
+import { useState } from 'react';
+
+const WorkoutForm = () => {
+    const [title, setTitle] = useState('');
+    const [load, setLoads] = useState('');
+    const [reps, setReps] = useState('');
+    const [error, setError] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const workout = {
+            title,
+            load,
+            reps
+        }
+        // const res = await axios.post('/api/workouts', workout);
+
+        // fetch request to post workout to database
+        const res = await fetch('/api/workouts', {
+            method: 'POST',
+            body: JSON.stringify(workout),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await res.json();
+
+        if(!res.ok) {
+            setError(json.error)
+            throw new Error(json.message)
+        }
+        if (res.ok) {
+            setTitle('');
+            setLoads('');
+            setReps('');
+            setError(null);
+            console.log('Workout Added!', json);
+        }
+    }
+    return ( 
+        <form className='create' onSubmit={handleSubmit}>
+            <h3>
+                Add a New Workout
+            </h3>
+            <label>
+                Exercise Title:
+            </label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <label>
+                Load (in Kg):
+            </label>
+            <input type="text" value={load} onChange={(e) => setLoads(e.target.value)} />
+            <label>
+                Reps:
+            </label>
+            <input type="text" value={reps} onChange={(e) => setReps(e.target.value)} />
+            <button>
+                Add Workout
+            </button>
+            {error && <div className='error'>{error}</div>}
+        </form>
+     );
+}
+ 
+export default WorkoutForm;
+```
+
+# 10. Adding React Context
+
+- Add react context thus avoiding the developer to reload the page when the data is updated.
+
+Link: https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=11
 
