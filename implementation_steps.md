@@ -911,6 +911,132 @@ export const useWorkoutsContext = () => {
 
 ## Consume the context using the custom hooks
 
-<!-- time: 19:00 -->
+- Update thee Home component to consume the context.
 
-https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=11
+**Home.js**
+
+```js
+const Home = () => {
+    // destructure the state and dispatch property from the context.
+    const {workouts, dispatch} = useWorkoutsContext();
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+          const response = await fetch('/api/workouts')
+          const json = await response.json()
+          const finalData = json.workouts;
+          if (response.ok) {
+            // dispatch an action to update the state. set the type to SET_WORKOUT & payload to the final data.
+            dispatch({type: 'SET_WORKOUT', payload: finalData})
+          }
+        } 
+    
+        fetchWorkouts()
+    }, [])
+}
+```
+
+- Update the workouts context custom hook.
+
+**useWorkoutsContext.js**
+
+```js
+import { WorkoutsContext } from '../context/WorkoutsContext';
+import { useContext } from 'react';
+
+export const useWorkoutsContext = () => {
+    const context = useContext(WorkoutsContext);
+    if (!context) {
+        throw new Error('useWorkoutsContext must be used within a WorkoutsContextProvider');
+    }
+    return context;
+}
+```
+
+**WorkoutsContext.js**
+
+```js
+export const WorkoutsContext = createContext();
+
+export const workoutsReducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_WORKOUT':
+            return {
+                workouts: action.payload
+            };
+        case 'CREATE_WORKOUT':
+            return {
+                workouts: [action.payload, ...state.workouts]
+            }
+        default:
+            return state;
+    }
+}
+
+export const WorkoutContextProvider = ({children}) => {
+    const [state, dispatch] = useReducer(workoutsReducer, {
+        workouts: null
+    }); 
+    return (
+        <WorkoutsContext.Provider value={{...state, dispatch}}>
+            { children }
+        </WorkoutsContext.Provider>
+    );
+}
+```
+
+- Now everything working fine except the workouts are not being updated and rendered on the web page.
+- we need to go to workout form.
+- when we add a new workout, we have to dispatch an action to update the context state. 
+- This will add the new workout to the global context state.
+- This way we keep our UI and database in sync.
+
+**WorkoutForm.js**
+
+```js
+const WorkoutForm = () => {
+    // destructure the dispatch property from the context.
+    const {dispatch} = useWorkoutsContext();
+    const [title, setTitle] = useState('');
+    const [load, setLoads] = useState('');
+    const [reps, setReps] = useState('');
+    const [error, setError] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const workout = {
+            title,
+            load,
+            reps
+        }
+
+        // fetch request to post workout to database
+        const res = await fetch('/api/workouts', {
+            method: 'POST',
+            body: JSON.stringify(workout),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await res.json();
+
+        if(!res.ok) {
+            setError(json.error)
+            throw new Error(json.message)
+        }
+        if (res.ok) {
+            setTitle('');
+            setLoads('');
+            setReps('');
+            setError(null);
+            // dispatch an action to create a workout. set the type to CREATE_WORKOUT & payload to the json.
+            dispatch({type: 'CREATE_WORKOUT', payload: json});
+            console.log('Workout Added!', json);
+        }
+    }
+}
+```
+
+- So now we dispatch the action and it update the context state, the workouts are updated and rendered on the web page.
+
+
+# Deleting Data
