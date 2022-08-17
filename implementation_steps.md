@@ -20,6 +20,9 @@
 
 [10. Adding React Context](#10-adding-react-context)
 
+[11. Deleting Data](#11-Deleting-Data)
+
+
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
 ![](./images/image1.png)
@@ -984,6 +987,8 @@ export const WorkoutContextProvider = ({children}) => {
 }
 ```
 
+## Update the context state and render the new data.
+
 - Now everything working fine except the workouts are not being updated and rendered on the web page.
 - we need to go to workout form.
 - when we add a new workout, we have to dispatch an action to update the context state. 
@@ -1040,3 +1045,4 @@ const WorkoutForm = () => {
 
 
 # Deleting Data
+
