@@ -778,3 +778,139 @@ export default WorkoutForm;
 
 Link: https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=11
 
+- create a context procider component.
+
+**WorkoutContext.js**
+
+```js
+import { createContext } from 'react';
+
+export const WorkoutContext = createContext();
+
+export const WorkoutContextProvider = () => {
+    return (
+        <WorkoutContext.Provider value={WorkoutContext}>
+            
+        </WorkoutContext.Provider>
+    );
+}
+```
+
+- Inject the workout context provider around App component.
+
+**index.js**
+
+```js
+import { WorkoutContextProvider } from './components/WorkoutContext';   
+
+    <WorkoutContextProvider>
+      <App />
+    </WorkoutContextProvider>
+```
+
+- Destructure the *children prop* from the context provider.
+- *children prop* represents whatever component is wrapped around the context provider.
+
+**WorkoutContext.js**
+
+```js
+export const WorkoutContextProvider = ({children}) => {
+    return (
+        <WorkoutContext.Provider value={WorkoutContext}>
+            { children }
+        </WorkoutContext.Provider>
+    );
+}
+```
+
+## Recap
+
+- Create a custom context provider component which returns an actual provider of the context we created.
+
+- *WorkoutContext Provider* wraps the components that need to access the context it represents.
+
+- Wraps the *children property* take into the component as props.
+
+- This *children property* represents whatever component this custom provider wraps around.
+
+- This children prop really wraps the root App component in *index.js* file.
+
+- So the *workout context provider* wraps the *App component* which in turn wraps all the component in our application.
+
+- Thus all the components in our application can access the *workout context*.
+
+
+## Using useReducer hook.
+
+- Define a useReducer hook.
+
+- Pass 2 arguments to the useReducer hook.
+    1) reducer function name.
+    2) initial value for the state.(an object with a workouts property set to null)
+
+- We update the state by calling the dispatch function.
+
+- Inside dispatch function we pass an object as argument.
+
+- Inside object we pass an action type and an optional payload.
+    1) *type* represents the type of action we want to dispatch.
+    2) *payload* represents the data we want to pass to the reducer.
+
+- Create the reducer function next.
+
+```js
+export const workoutsReducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_WORKOUT':
+            return {
+                workouts: action.payload
+            };
+        case 'CREATE_WORKOUT':
+            return {
+                workouts: [action.payload, ...state.workouts]
+            }
+        default:
+            return state;
+    }
+}
+```
+
+- Pass state and dispatch property as props to value attribute of the context provider.
+
+**WorkoutContextProvider.js**
+
+```js
+return (
+        <WorkoutContext.Provider value={{state, dispatch}}>
+            { children }
+        </WorkoutContext.Provider>
+    );
+```
+
+- *state* represents the state of the application.
+- *dispatch* represents the dispatch function which we use to update the state.
+
+## Create custom hooks for the context
+
+- Create a hooks folder.
+
+**useWorkoutsContext.js**
+
+```js
+import { WorkoutsContext } from '../context/WorkoutContext';
+import { useReducer } from 'react';
+
+export const useWorkoutsContext = () => {
+    const context = useContext(WorkoutsContext);
+    if (!context) {
+        throw new Error('useWorkoutsContext must be used within a WorkoutsContextProvider');
+    }
+    return workouts;
+}
+```
+
+## Consume the context using the custom hooks
+
+<!-- time: 19:00 -->
+
+https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=11
