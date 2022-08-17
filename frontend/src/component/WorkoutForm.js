@@ -7,6 +7,7 @@ const WorkoutForm = () => {
     const [load, setLoads] = useState('');
     const [reps, setReps] = useState('');
     const [error, setError] = useState(null);
+    const [emptyFields, setEmptyFields] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +30,7 @@ const WorkoutForm = () => {
 
         if(!res.ok) {
             setError(json.error)
+            setEmptyFields(json.emptyFields)
             throw new Error(json.message)
         }
         if (res.ok) {
@@ -36,6 +38,7 @@ const WorkoutForm = () => {
             setLoads('');
             setReps('');
             setError(null);
+            setEmptyFields([]);
             dispatch({type: 'CREATE_WORKOUT', payload: json});
             console.log('Workout Added!', json);
         }
@@ -48,15 +51,27 @@ const WorkoutForm = () => {
             <label>
                 Exercise Title:
             </label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input 
+                type="text" 
+                value={title} 
+                className={emptyFields && emptyFields.includes('title') ? 'error' : ''}
+                onChange={(e) => setTitle(e.target.value)} />
             <label>
                 Load (in Kg):
             </label>
-            <input type="text" value={load} onChange={(e) => setLoads(e.target.value)} />
+            <input 
+                type="text" 
+                value={load} 
+                className={emptyFields && emptyFields.includes('load') ? 'error' : ''}
+                onChange={(e) => setLoads(e.target.value)} />
             <label>
                 Reps:
             </label>
-            <input type="text" value={reps} onChange={(e) => setReps(e.target.value)} />
+            <input 
+                type="text" 
+                value={reps} 
+                className={emptyFields && emptyFields.includes('reps') ? 'error' : ''}
+                onChange={(e) => setReps(e.target.value)} />
             <button>
                 Add Workout
             </button>

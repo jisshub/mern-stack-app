@@ -998,6 +998,8 @@ export const WorkoutContextProvider = ({children}) => {
 **WorkoutForm.js**
 
 ```js
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+
 const WorkoutForm = () => {
     // destructure the dispatch property from the context.
     const {dispatch} = useWorkoutsContext();
@@ -1045,4 +1047,131 @@ const WorkoutForm = () => {
 
 
 # Deleting Data
+
+- Place a button and when we click on it, we dispatch an action to delete the workout.
+
+**component\WorkoutDetails.js**
+
+```js
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+
+const WorkoutDetails = ({ workout }) => {
+    // destructure the dispatch.
+    const { dispatch } = useWorkoutsContext();
+    const handleDelete = async () => {
+        // get the specific workout id from the url
+        const response = await fetch(`/api/workouts/${workout._id}`, {
+            // set the method to delete
+            method: 'DELETE'
+        });
+        // get the json data to be deleted from the response.
+        const json = await response.json();
+        if (response.ok) {
+            console.log('Workout Deleted!', json);
+            // dispatch the action to delete the workout.
+            dispatch({ type: 'DELETE_WORKOUT', payload: json });
+        }
+    }
+    return (  
+        <div className='workout-details'>
+            <h4>{workout.title}</h4>
+            <p><strong>Load (kg): </strong>{workout.load}</p>
+            <p><strong>Number of reps: </strong>{workout.reps}</p>
+            <p>{workout.createdAt}</p>
+            <span onClick={handleDelete}>Delete</span>
+        </div>
+    );
+}
+```
+
+**frontend\src\context\WorkoutsContext.js**
+
+```js
+case 'DELETE_WORKOUT':
+    return {
+        workouts: state.workouts.filter(workout => workout._id !== action.payload._id)
+    }
+```
+
+# Handling Error Responses
+
+- If the request is not successful, we need to display an error message.
+- Check for empty fields while creating a workout in backend folder.
+
+**\backend\controllers\WorkoutsController.js**
+
+```js
+const createWorkout = async (req, res) => {
+    const {title, load, reps} = req.body;
+    
+    // check for empty fields. if yes send a 400 error.
+    const emptyFields = [];
+    if (!title) {
+        emptyFields.push('title');
+    } 
+    if (!load) {
+        emptyFields.push('load');
+    }
+    if (!reps) {
+        emptyFields.push('reps');
+    }
+    if (emptyFields.length > 0) {
+        return res.status(400).json({ error: 'Please fill in all fields', emptyFields });
+    }
+
+    try {
+        const newWorkout = await Workout.create({title, load, reps});
+        res.status(201).json({
+            "message": "workout created",
+            newWorkout});
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
+```
+
+- Do the same for front end side.
+
+**frontend\src\component\WorkoutForm.js**
+
+```js
+return ( 
+    <form className='create' onSubmit={handleSubmit}>
+        <h3>
+            Add a New Workout
+        </h3>
+        <label>
+            Exercise Title:
+        </label>
+        <input 
+            type="text" 
+            value={title} 
+            // set className to error if the title is empty.
+            className={emptyFields && emptyFields.includes('title') ? 'error' : ''}
+            onChange={(e) => setTitle(e.target.value)} />
+        <label>
+            Load (in Kg):
+        </label>
+        <input 
+            type="text" 
+            value={load} 
+            // set className to error if the load is empty.
+            className={emptyFields && emptyFields.includes('load') ? 'error' : ''}
+            onChange={(e) => setLoads(e.target.value)} />
+        <label>
+            Reps:
+        </label>
+        <input 
+            type="text" 
+            value={reps} 
+            // set className to error if the reps is empty.
+            className={emptyFields && emptyFields.includes('reps') ? 'error' : ''}
+            onChange={(e) => setReps(e.target.value)} />
+        <button>
+            Add Workout
+        </button>
+        {error && <div className='error'>{error}</div>}
+    </form>
+);
+```
 
