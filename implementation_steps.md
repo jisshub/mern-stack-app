@@ -26,6 +26,8 @@
 
 [# 13. Finishing Touches](#13-Finishing-Touches)
 
+[# 14. Mern App Authentication](#14-mern-app-authentication)
+
 
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
@@ -1234,5 +1236,12 @@ return (
 - Now the date is more readable.
 - Styling is finished
 - MERN app is finished.
+
+# 14. Mern App Authentication
+
+Tutorial Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8OhpOZxNdhXggFz2lOuCT
+
+
+
 
 
