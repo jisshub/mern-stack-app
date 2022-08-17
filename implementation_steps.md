@@ -22,6 +22,10 @@
 
 [11. Deleting Data](#11-Deleting-Data)
 
+[# 12. Handling Error Responses](#12-Handling-Error-Responses)
+
+[# 13. Finishing Touches](#13-Finishing-Touches)
+
 
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
 
@@ -1046,7 +1050,7 @@ const WorkoutForm = () => {
 - So now we dispatch the action and it update the context state, the workouts are updated and rendered on the web page.
 
 
-# Deleting Data
+# 11. Deleting Data
 
 - Place a button and when we click on it, we dispatch an action to delete the workout.
 
@@ -1093,7 +1097,7 @@ case 'DELETE_WORKOUT':
     }
 ```
 
-# Handling Error Responses
+# 12. Handling Error Responses
 
 - If the request is not successful, we need to display an error message.
 - Check for empty fields while creating a workout in backend folder.
@@ -1174,4 +1178,61 @@ return (
     </form>
 );
 ```
+
+# 13. Finishing Touches
+
+
+## 1. Format the buttons
+
+- Update styles of the app including buttons.
+- Add material-ui styling to the app.
+
+**frontend\public\index.html**
+
+```html
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+/>
+```
+
+**frontend\src\component\WorkoutDetails.js**
+
+```JSX
+<span className="material-symbols-outlined" onClick={handleDelete}>Delete</span>
+```
+
+## 2. Format the Dates
+
+- Format the dates to be more readable.
+- Install date-fns package using npm.
+
+```bash
+npm i date-fns
+```
+
+**frontend\src\component\WorkoutDetails.js**
+
+```js
+// import formatDistanceToNow from date-fns package.
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+
+return (  
+    <div className='workout-details'>
+        <h4>{workout.title}</h4>
+        <p><strong>Load (kg): </strong>{workout.load}</p>
+        <p><strong>Number of reps: </strong>{workout.reps}</p>
+
+        // format the date to be more readable.
+        <p>{formatDistanceToNow(new Date(workout.createdAt), {addSuffix: true})}</p>
+        
+        <span className="material-symbols-outlined" onClick={handleDelete}>Delete</span>
+    </div>
+);
+```
+
+- Now the date is more readable.
+- Styling is finished
+- MERN app is finished.
+
 

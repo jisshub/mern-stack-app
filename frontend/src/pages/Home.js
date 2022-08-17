@@ -1,5 +1,5 @@
 
-import {useEffect, useState } from 'react';
+import {useEffect} from 'react';
 import WorkoutDetails from '../component/WorkoutDetails';
 import WorkoutForm from '../component/WorkoutForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
@@ -17,7 +17,7 @@ const Home = () => {
         } 
     
         fetchWorkouts()
-      }, [])
+      }, [dispatch])
     
     return (
         <div className='home'>
