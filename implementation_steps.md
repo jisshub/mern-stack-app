@@ -789,7 +789,7 @@ Link: https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRH
 
 - create a context procider component.
 
-**WorkoutContext.js**
+**frontend\src\context\WorkoutsContext.js**
 
 ```js
 import { createContext } from 'react';
@@ -820,7 +820,7 @@ import { WorkoutContextProvider } from './components/WorkoutContext';
 - Destructure the *children prop* from the context provider.
 - *children prop* represents whatever component is wrapped around the context provider.
 
-**WorkoutContext.js**
+**frontend\src\context\WorkoutsContext.js**
 
 ```js
 export const WorkoutContextProvider = ({children}) => {
@@ -886,7 +886,7 @@ export const workoutsReducer = (state, action) => {
 
 - Pass state and dispatch property as props to value attribute of the context provider.
 
-**WorkoutContextProvider.js**
+**frontend\src\context\WorkoutsContext.js**
 
 ```js
 return (
@@ -903,7 +903,7 @@ return (
 
 - Create a hooks folder.
 
-**useWorkoutsContext.js**
+**frontend\src\hooks\useWorkoutsContext.js**
 
 ```js
 import { WorkoutsContext } from '../context/WorkoutContext';
@@ -946,7 +946,7 @@ const Home = () => {
 
 - Update the workouts context custom hook.
 
-**useWorkoutsContext.js**
+**frontend\src\hooks\useWorkoutsContext.js**
 
 ```js
 import { WorkoutsContext } from '../context/WorkoutsContext';
@@ -961,7 +961,7 @@ export const useWorkoutsContext = () => {
 }
 ```
 
-**WorkoutsContext.js**
+**frontend\src\context\WorkoutsContext.js**
 
 ```js
 export const WorkoutsContext = createContext();
@@ -1001,7 +1001,7 @@ export const WorkoutContextProvider = ({children}) => {
 - This will add the new workout to the global context state.
 - This way we keep our UI and database in sync.
 
-**WorkoutForm.js**
+**frontend\src\component\WorkoutForm.js**
 
 ```js
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
