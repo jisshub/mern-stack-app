@@ -22,11 +22,11 @@
 
 [11. Deleting Data](#11-Deleting-Data)
 
-[# 12. Handling Error Responses](#12-Handling-Error-Responses)
+[12. Handling Error Responses](#12-Handling-Error-Responses)
 
-[# 13. Finishing Touches](#13-Finishing-Touches)
+[13. Finishing Touches](#13-Finishing-Touches)
 
-[# 14. Mern App Authentication](#14-mern-app-authentication)
+[14. Mern App Authentication](#14-mern-app-authentication)
 
 
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
