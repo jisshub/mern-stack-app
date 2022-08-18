@@ -26,7 +26,9 @@
 
 [13. Finishing Touches](#13-Finishing-Touches)
 
-[14. Mern App Authentication](#14-mern-app-authentication)
+[14. Deploying the App](#14-deploying-the-app)
+
+[15. Mern App Authentication](#15-mern-app-authentication)
 
 
 Playlist Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
@@ -1237,7 +1239,32 @@ return (
 - Styling is finished
 - MERN app is finished.
 
-# 14. Mern App Authentication
+# 14. Deploying the App
+
+## Prepare for Deployment
+
+- Create an optimized production build.
+- Run the build from frontend folder.
+
+```bash
+cd frontend
+npm run build
+```
+
+- Login to heroku and create new app
+
+```bash
+heroku login
+heroku create appname
+```
+
+- Create a Procfile in root folder and add the following commands.
+
+```Procfile
+web: node backend/server.js
+```
+
+# 15. Mern App Authentication
 
 Tutorial Link: https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8OhpOZxNdhXggFz2lOuCT
 

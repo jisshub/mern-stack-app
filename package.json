@@ -1,5 +1,27 @@
 {
   "dependencies": {
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.5.2",
+    "nodemon": "^2.0.19",
     "react-router-dom": "5.1"
-  }
+  },
+  "name": "workout-buddy-app",
+  "description": "An app to track the exercises we do.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jisshub/mern-stack-app.git"
+  },
+  "author": "Jissmon JOse",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jisshub/mern-stack-app/issues"
+  },
+  "homepage": "https://github.com/jisshub/mern-stack-app#readme"
 }
